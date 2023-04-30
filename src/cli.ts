@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
-const args = yargs
+yargs(hideBin(process.argv))
   .locale("en")
   .scriptName("aniya")
-  .alias("h", "help")
-  .alias("v", "version")
-  .command("* <message>", "print a message received as an argument")
-  .parseSync();
-
-console.log(args["message"]);
+  .usage("Usage: $0 <command> [options]")
+  .commandDir("commands")
+  .strict()
+  .alias({ h: "help", v: "version" }).argv;
