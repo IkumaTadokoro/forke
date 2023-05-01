@@ -1,7 +1,12 @@
 import { graphql } from "../gql";
 import { request } from "graphql-request";
 import { SearchPullRequestQuery } from "../gql/graphql";
-import { DATE_FORMAT, formatUTCDate } from "./dateUtil";
+import {
+  DATE_FORMAT,
+  TIME_UNIT,
+  calcTimeDiff,
+  formatUTCDate,
+} from "./dateUtil";
 
 const apiBaseUrl = "https://api.github.com/graphql";
 const header = {
@@ -142,9 +147,11 @@ export const searchPullRequest = async (
   return searchPullRequest(query, pullRequests, pageInfo.endCursor);
 };
 
+export type FormattedPullRequest = ReturnType<typeof formatPullRequest>[number];
 export const formatPullRequest = (
   pullRequests: PullRequest[],
-  timezone: string
+  timezone: string,
+  timeUnit: ValueOf<typeof TIME_UNIT>
 ) => {
   return pullRequests.map((pullRequest) => {
     let firstCommit:
@@ -186,19 +193,33 @@ export const formatPullRequest = (
 
     const formatDate = (date?: string) =>
       date ? formatUTCDate(date, timezone, DATE_FORMAT.HUMAN_READABLE) : "";
+    const {
+      timeFromCommitToOpen,
+      timeFromOpenToReview,
+      timeFromReviewToMerge,
+      leadTime,
+    } = calcLeadTime({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      firstCommitAt: new Date(firstCommit!.authoredDate),
+      openedAt: new Date(pullRequest.createdAt),
+      firstReviewedAt: new Date(pullRequest.reviews?.nodes?.[0]?.createdAt),
+      mergedAt: new Date(pullRequest.mergedAt),
+      timeUnit,
+    });
 
     return {
       title: pullRequest.title,
-      url: pullRequest.url,
+      url: pullRequest.url as string,
       repository: `${pullRequest.repository.owner.login}/${pullRequest.repository.name}`,
       author: pullRequest.author?.login,
       baseRefName: pullRequest.baseRefName,
       headRefName: pullRequest.headRefName,
-      labels: pullRequest.labels?.nodes?.map((label) => label?.name) ?? "",
+      labels:
+        pullRequest.labels?.nodes?.flatMap((label) => label?.name ?? []) ?? "",
       isDraft: pullRequest.isDraft,
       isReadByViewer: pullRequest.isReadByViewer,
       isForcePushed,
-      state: pullRequest.state,
+      state: pullRequest.state as string,
       additions: pullRequest.additions,
       deletions: pullRequest.deletions,
       changedFileCount: pullRequest.changedFiles,
@@ -208,12 +229,50 @@ export const formatPullRequest = (
       firstCommitCommittedDate: formatDate(firstCommit?.committedDate),
       firstReviewedAt: formatDate(pullRequest.reviews?.nodes?.[0]?.createdAt),
       reviewers,
-      totalCommentsCount: pullRequest.totalCommentsCount ?? "",
+      totalCommentsCount: pullRequest.totalCommentsCount ?? 0,
       createdAt: formatDate(pullRequest.createdAt),
       updatedAt: formatDate(pullRequest.updatedAt),
       publishedAt: formatDate(pullRequest.publishedAt),
       closedAt: formatDate(pullRequest.closedAt),
       mergedAt: formatDate(pullRequest.mergedAt),
+      timeFromCommitToOpen,
+      timeFromOpenToReview,
+      timeFromReviewToMerge,
+      leadTime,
     };
   });
+};
+
+const calcLeadTime = ({
+  firstCommitAt,
+  openedAt,
+  firstReviewedAt,
+  mergedAt,
+  timeUnit,
+}: {
+  firstCommitAt: Date;
+  openedAt: Date;
+  firstReviewedAt: Date;
+  mergedAt: Date;
+  timeUnit: ValueOf<typeof TIME_UNIT>;
+}) => {
+  const timeFromCommitToOpen = calcTimeDiff(firstCommitAt, openedAt, timeUnit);
+  const timeFromOpenToReview = calcTimeDiff(
+    openedAt,
+    firstReviewedAt,
+    timeUnit
+  );
+  const timeFromReviewToMerge = calcTimeDiff(
+    firstReviewedAt,
+    mergedAt,
+    timeUnit
+  );
+  const leadTime =
+    timeFromCommitToOpen + timeFromOpenToReview + timeFromReviewToMerge;
+  return {
+    timeFromCommitToOpen,
+    timeFromOpenToReview,
+    timeFromReviewToMerge,
+    leadTime,
+  };
 };
