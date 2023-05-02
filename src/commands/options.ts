@@ -46,6 +46,14 @@ const commonOptions = {
 
 export const listOptions = {
   ...commonOptions,
+  order: {
+    alias: "o",
+    type: "string",
+    choices: ["asc", "desc"] as const,
+    default: "asc",
+    describe: "Ascending or descending result order of MergedAt.",
+    requiresArgs: true,
+  },
 } as const;
 
 export const statOptions = {

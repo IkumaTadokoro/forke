@@ -1,6 +1,9 @@
 type ValueOf<T> = T[keyof T];
 
-type ListCommandOptions = FormatOptions & QueryOptions;
+type ListCommandOptions = {
+  order: "asc" | "desc";
+} & FormatOptions &
+  QueryOptions;
 
 type FormatOptions = {
   format: "json" | "csv" | "csv-no-header";
