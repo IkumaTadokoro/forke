@@ -1,8 +1,8 @@
 {
   "name": "forke",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple CLI tool designed to measure development productivity from GitHub info.",
+  "main": "dist/cli.js",
   "bin": {
     "filo": "dist/cli.js"
   },
@@ -39,6 +39,7 @@
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8",
+    "semantic-release": "^21.0.2",
     "tsx": "^3.12.6",
     "typescript": "^5.0.4",
     "vitest": "^0.30.1"
