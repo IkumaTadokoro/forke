@@ -1,10 +1,10 @@
 {
-  "name": "aniya",
+  "name": "forke",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "aniya": "dist/cli.js"
+    "filo": "dist/cli.js"
   },
   "scripts": {
     "dev": "tsc && dotenv -e .env -- node dist/cli.js",

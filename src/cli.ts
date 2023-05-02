@@ -5,7 +5,7 @@ import { hideBin } from "yargs/helpers";
 
 yargs(hideBin(process.argv))
   .locale("en")
-  .scriptName("aniya")
+  .scriptName("forke")
   .usage("Usage: $0 <command> [options]")
   .commandDir("commands")
   .strict()
