@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsc && dotenv -e .env -- node dist/cli.js",
     "build": "tsc",
-    "prepare": "npm run build",
+    "prepare": "husky install",
     "lint": "eslint --fix '{src,tests}/**/*.{ts,js}'",
     "format": "prettier --write '{src,tests}/**/*.{ts,js}'",
     "test": "vitest",
@@ -22,8 +22,10 @@
     "devops"
   ],
   "author": "ikuma-t",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
     "@graphql-codegen/cli": "3.3.1",
     "@graphql-codegen/client-preset": "3.0.1",
     "@graphql-codegen/typescript": "^3.0.4",
@@ -38,6 +40,7 @@
     "dotenv-cli": "^7.2.1",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.8",
     "semantic-release": "^21.0.2",
     "tsx": "^3.12.6",
