@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "tsc && dotenv -e .env -- node dist/cli.js",
     "build": "tsc",
+    "prepare": "npm run build",
     "lint": "eslint --fix '{src,tests}/**/*.{ts,js}'",
     "format": "prettier --write '{src,tests}/**/*.{ts,js}'",
     "test": "vitest",
