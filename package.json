@@ -4,7 +4,7 @@
   "description": "Simple CLI tool designed to measure development productivity from GitHub info.",
   "main": "dist/cli.js",
   "bin": {
-    "filo": "dist/cli.js"
+    "forke": "dist/cli.js"
   },
   "scripts": {
     "dev": "tsc && dotenv -e .env -- node dist/cli.js",
