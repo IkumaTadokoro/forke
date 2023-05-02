@@ -1,5 +1,5 @@
-import { parseISO, format } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { parseISO } from "date-fns";
+import { utcToZonedTime, format } from "date-fns-tz";
 
 export const DATE_FORMAT = {
   ISO8601: "yyyy-MM-dd'T'HH:mm:ssxxx",
@@ -16,7 +16,7 @@ export const formatUTCDate = (
 ) => {
   const date = parseISO(dateString);
   const zonedDate = utcToZonedTime(date, timezone);
-  return format(zonedDate, dateFormat);
+  return format(zonedDate, dateFormat, { timeZone: timezone });
 };
 
 /**
