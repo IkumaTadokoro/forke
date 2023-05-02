@@ -17,12 +17,17 @@
     "test:ui": "vitest --ui",
     "codegen": "graphql-codegen --config codegen.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IkumaTadokoro/forke.git"
+  },
   "keywords": [
     "four-keys",
     "devops"
   ],
-  "author": "ikuma-t",
+  "author": "IkumaTadokoro <tadokorodev@gmail.com>",
   "license": "MIT",
+  "homepage": "https://github.com/IkumaTadokoro/forke#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
