@@ -51,5 +51,16 @@
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "yargs": "^17.7.2"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ],
+    "branches": [
+      "main"
+    ]
   }
 }
