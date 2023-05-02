@@ -202,7 +202,10 @@ export const formatPullRequest = (
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       firstCommitAt: new Date(firstCommit!.authoredDate),
       openedAt: new Date(pullRequest.createdAt),
-      firstReviewedAt: new Date(pullRequest.reviews?.nodes?.[0]?.createdAt),
+      // レビューなしでマージされている場合は、Approveをレビューとみなす
+      firstReviewedAt: new Date(
+        pullRequest.reviews?.nodes?.[0]?.createdAt ?? pullRequest.mergedAt
+      ),
       mergedAt: new Date(pullRequest.mergedAt),
       timeUnit,
     });
@@ -243,7 +246,7 @@ export const formatPullRequest = (
   });
 };
 
-const calcLeadTime = ({
+export const calcLeadTime = ({
   firstCommitAt,
   openedAt,
   firstReviewedAt,
