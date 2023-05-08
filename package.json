@@ -1,6 +1,6 @@
 {
   "name": "forke",
-  "version": "0.0.0",
+  "version": "1.1.4",
   "description": "Simple CLI tool designed to measure development productivity from GitHub info.",
   "main": "dist/cli.js",
   "bin": {
